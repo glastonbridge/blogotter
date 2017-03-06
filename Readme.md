@@ -9,13 +9,10 @@ I needed a backend.
 ## Features
 
 1. Serves up posts on a simple interface
-
-```
-otter.latestPosts().then(function(posts) {
-
-})
-```
-
+        
+        otter.latestPosts().then(function(posts) {
+        })
+        
 2. Provides a default Wordpress-like editor that's nice to use for a non-techy.
 
 3. Has an administrator account that can post when authenticated.
@@ -33,10 +30,10 @@ otter.latestPosts().then(function(posts) {
 4. Copy the values supplied, and paste them in `web-admin/index.html`, right underneath where it says `<!-- Firebase -->`
 
 5. Set up a local webserver, running from the `web-admin` directory. On \*nix systems, I like to use Python's SimpleHTTPServer
-```
-cd path-to-repo/blogotter/web-admin
-python -m SimpleHTTPServer
-```
+
+        cd path-to-repo/blogotter/web-admin
+        python -m SimpleHTTPServer
+
 6. Open up the new locally-hosted webpage in your browser.  If you're using SimpleHTTPServer with no additional settings, it will be at http://localhost:8000
 
 7. Click the little human figure in the top-right corner of the page, and log in.  By default, we use Google Auth because you will need it anyway for the Firebase account.
