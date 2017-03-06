@@ -1,0 +1,11 @@
+{
+  "users": {
+    "myuid" : {
+      "admin": true,
+      "editor": true
+    }
+  },
+  "posts": {
+
+  }
+}

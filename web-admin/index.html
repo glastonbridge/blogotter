@@ -1,0 +1,225 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- sb-admin theme stuff -->
+    <link href="./external/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./external/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <link href="./external/bootstrap-sb-admin/css/sb-admin-2.css" rel="stylesheet">
+    <link href="./external/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="./external/bootstrap-wysiwyg/editor-style.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+    <!-- end sb-admin theme stuff -->
+
+</head>
+
+<body>
+
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </button>
+                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li class="userDetails"><a href="#"><i class="fa fa-user fa-fw"></i> <span id="userDetailText"></span></a>
+                        </li>
+                        <li class="userDetails"><a href="#"><i class="fa fa-user fa-fw"></i> <input type="text" id="userDetailUID"></input></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> <span id="userLogInOut"></span></a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+            </ul>
+            <!-- /.ul top links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Posts<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level" id="postList">
+                                <li>
+                                    <a href="#">New post</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </nav>->
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><input type="text" id="title"></input></h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+
+
+
+                <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+                    <div class="btn-group">
+                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a data-edit="fontSize 5" class="fs-Five">Huge</a></li>
+                            <li><a data-edit="fontSize 3" class="fs-Three">Normal</a></li>
+                            <li><a data-edit="fontSize 1" class="fs-One">Small</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Text Highlight Color"><i class="fa fa-paint-brush"></i>&nbsp;<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <p>&nbsp;&nbsp;&nbsp;Text Highlight Color:</p>
+                            <li><a data-edit="backColor #00FFFF">Blue</a></li>
+                            <li><a data-edit="backColor #00FF00">Green</a></li>
+                            <li><a data-edit="backColor #FF7F00">Orange</a></li>
+                            <li><a data-edit="backColor #FF0000">Red</a></li>
+                            <li><a data-edit="backColor #FFFF00">Yellow</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Font Color"><i class="fa fa-font"></i>&nbsp;<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <p>&nbsp;&nbsp;&nbsp;Font Color:</p>
+                            <li><a data-edit="foreColor #000000">Black</a></li>
+                            <li><a data-edit="foreColor #0000FF">Blue</a></li>
+                            <li><a data-edit="foreColor #30AD23">Green</a></li>
+                            <li><a data-edit="foreColor #FF7F00">Orange</a></li>
+                            <li><a data-edit="foreColor #FF0000">Red</a></li>
+                            <li><a data-edit="foreColor #FFFF00">Yellow</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
+                        <a class="btn btn-default" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
+                        <a class="btn btn-default" data-edit="strikethrough" title="Strikethrough"><i class="fa fa-strikethrough"></i></a>
+                        <a class="btn btn-default" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
+                        <a class="btn btn-default" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
+                        <a class="btn btn-default" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fa fa-outdent"></i></a>
+                        <a class="btn btn-default" data-edit="indent" title="Indent (Tab)"><i class="fa fa-indent"></i></a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
+                        <a class="btn btn-default" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
+                        <a class="btn btn-default" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
+                        <a class="btn btn-default" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
+                        <div class="dropdown-menu input-append">
+                            <input placeholder="URL" type="text" data-edit="createLink" />
+                            <button class="btn" type="button">Add</button>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-unlink"></i></a>
+                        <span class="btn btn-default" title="Insert picture (or just drag & drop)" id="pictureBtn"> <i class="fa fa-picture-o"></i>
+                                            							<input class="imgUpload" type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
+                                            						</span>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
+                        <a class="btn btn-default" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
+                    </div>
+                </div>
+                <div id="editor" class="lead" data-placeholder="This is a basic example with a simple toolbar."></div>
+                <div id="editorPreview"></div>
+                <p style="text-align: center;">
+                    <a class="btn btn-large btn-default jumbo" href="#!" onClick="$('#editorPreview').html($('#editor').html());">Preview</a>
+                    <a class="btn btn-large btn-default jumbo" href="#!" id="saveButton">Save</a>
+                </p>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    </div>
+    <!-- /.wrapper -->
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD0gppvBPwmEG-Y6bUkMwli790Wkira374",
+            authDomain: "blogotter-66932.firebaseapp.com",
+            databaseURL: "https://blogotter-66932.firebaseio.com",
+            storageBucket: "blogotter-66932.appspot.com",
+            messagingSenderId: "905720101265"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <!-- jQuery -->
+    <script src="./external/jquery/jquery.min.js"></script>
+    <script src="./external/jquery-hotkeys/jquery.hotkeys.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="./external/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="./external/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="./external/bootstrap-sb-admin/js/sb-admin-2.js"></script>
+    <script src="./external/bootstrap-wysiwyg/bootstrap-wysiwyg.min.js"></script>
+
+    <script src="./js/Eventdispatcher.js"></script>
+    <script src="./js/blogotter.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>

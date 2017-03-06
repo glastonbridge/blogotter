@@ -1,0 +1,26 @@
+{
+  "rules": {
+    "posts": {
+      ".read": true,
+      ".write": "root.child('users').child(auth.uid).child('editor').val() == true",
+      "$post": {
+      	".validate": "newData.hasChildren(['title', 'body'])",
+      	"title": {
+          ".validate": "newData.isString()"
+      	},
+        "body": {
+            ".validate": "newData.isString()"
+        },
+        "$other": { ".validate": false }
+
+      },
+    },
+    "users": {
+      //only admin can access this area, as such we've been a bit looser with the
+      //allowable data
+      ".read": "root.child('users').child(auth.uid).child('admin').val() == true",
+      ".write": "root.child('users').child(auth.uid).child('admin').val() == true",
+
+    }
+  }
+}
