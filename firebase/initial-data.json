@@ -2,7 +2,8 @@
   "users": {
     "myuid" : {
       "admin": true,
-      "editor": true
+      "editor": true,
+      "friendlyname": "Ottblogger"
     }
   },
   "posts": {
