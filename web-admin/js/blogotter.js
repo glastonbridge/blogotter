@@ -49,10 +49,12 @@ BlogOtter.prototype.onAuthStateChanged = function(user) {
 
 BlogOtter.prototype.createNewPost = function(title, body) {
     var self = this;
-    this.database.ref('posts').push({
+    return this.database.ref('posts').push({
         //name: this.user.displayName,
         title: title,
-        body: body
+        body: body,
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        author: this.user.uid
     }).then(function() {
         self.dispatchEvent(BLOGOTTER_NEW_POSTS);
     }).catch(function(error) {
@@ -62,7 +64,7 @@ BlogOtter.prototype.createNewPost = function(title, body) {
 
 BlogOtter.prototype.updatePost = function(key, title, body) {
     var self = this;
-    this.database.ref('posts').child(key).set({
+    return this.database.ref('posts').child(key).set({
         //name: this.user.displayName,
         title: title,
         body: body
@@ -76,12 +78,76 @@ BlogOtter.prototype.updatePost = function(key, title, body) {
 BlogOtter.prototype.latestPosts = function() {
     var self = this;
     return new Promise(function(res, rej) {
+        var users = self.database.ref('users');
         self.database.ref('posts')
             .limitToLast(12)
             .once('value', function(posts) {
-                res(posts.val());
+                var results = posts.val();
+		            var toProcess = Object.keys(results).length;
+                var nameGetter = function(postId, username) {
+                    results[postId].authorname = username.val();
+                    --toProcess;
+                    if (toProcess === 0) {
+                        res(results);
+                    }
+                };
+                for (var postId in results) {
+                    users.child(results[postId].author + "/friendlyname").once('value', nameGetter.bind(self,postId));
+                }
             });
     });
 };
+
+
+BlogOtter.prototype.setPage = function(slug, title, body) {
+    var self = this;
+		console.log(JSON.stringify({
+				slug: 'pages/'+slug,
+        title: title,
+        body: body,
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        author: this.user.uid
+    }));
+    return this.database.ref('pages/'+slug).set({
+        title: title,
+        body: body,
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        author: this.user.uid
+    }).then(function() {
+        self.dispatchEvent(BLOGOTTER_NEW_POSTS);
+    }).catch(function(error) {
+        console.error('Error writing new message to Firebase Database', error);
+    });
+};
+
+/**
+ * TODO: gets all the pages... ugh.  Don't do this
+ */
+BlogOtter.prototype.listPages = function() {
+    var self = this;
+    return new Promise(function(res, rej) {
+        var users = self.database.ref('users');
+        self.database.ref('pages')
+            .once('value', function(posts) {
+                var results = posts.val();
+									if (!results) {
+										res({});
+										return;
+									}
+		            var toProcess = Object.keys(results).length;
+                var nameGetter = function(postId, username) {
+                    results[postId].authorname = username.val();
+                    --toProcess;
+                    if (toProcess === 0) {
+                        res(results);
+                    }
+                };
+                for (var postId in results) {
+                    users.child(results[postId].author + "/friendlyname").once('value', nameGetter.bind(self,postId));
+                }
+            });
+    });
+};
+
 
 Object.assign(BlogOtter.prototype, EventDispatcher.prototype);

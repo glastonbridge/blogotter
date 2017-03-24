@@ -20,20 +20,53 @@ var updateUserInfo = function() {
   }
 };
 
-var createNewPost = function() {
-  $('#editor').html("");
-  $('#title').val("");
-  editingPost = undefined;
-};
 
 var storedPosts = {};
 var editingPost;
+var editingPage;
+var isPost = true;
+
+var createNewPost = function() {
+  $('#editor').html("");
+  $('#title').val("");
+  $('#username').html(window.otter.user.displayName);
+  $('#date').html("now");
+	$('#userdetail').show();
+	$('#pageslug').hide();
+  editingPost = undefined;
+	isPost = true;
+};
+
 
 var editPost = function(postId) {
     $('#editor').html(storedPosts[postId].body);
     $('#title').val(storedPosts[postId].title);
+	  $('#username').html(storedPosts[postId].authorname);
+	  $('#date').html(new Date(storedPosts[postId].timestamp).toDateString());
+		$('#userdetail').show();
+		$('#pageslug').hide();
     editingPost = postId;
-}
+		isPost = true;
+};
+
+
+var createNewPage = function() {
+  $('#editor').html("");
+  $('#title').val("");
+  $('#userdetail').hide();
+	$('#pageslug').show();
+  editingPage = undefined;
+	isPost = false;
+};
+
+var editPage = function(pageId) {
+    $('#editor').html(storedPages[pageId].body);
+    $('#title').val(storedPages[pageId].title);
+		$('#userdetail').hide();
+		$('#pageslug').show();
+    editingPage = pageId;
+		isPost = false;
+};
 
 var updatePostList = function() {
   window.otter.latestPosts().then(function(posts) {
@@ -48,17 +81,33 @@ var updatePostList = function() {
   });
 };
 
+
+var updatePageList = function() {
+  window.otter.listPages().then(function(pages) {
+    storedPages = pages;
+    var pageHTML = "<li><a id='createNewPage' href='#'>New page</a></li>";
+    for (var pageIndex in pages) {
+      pageHTML += "<li><a href='#' onclick='editPage(\""+pageIndex+"\")'>"+pageIndex+"</a></li>";
+    }
+    $('#pageList').html(pageHTML);
+    $('#createNewPage').click(createNewPage);
+  });
+};
+
 var uploadAPost = function() {
   var title = $('#title').val();
   var body = $('#editor').html();
+  var slug = $('#slug').val();
   console.log("editingPost = "+editingPost);
-  if (editingPost) {
-    window.otter.updatePost(editingPost, title, body);
-  } else {
-    window.otter.createNewPost(title, body);
-  }
-
-  updatePostList();
+	if (isPost) {
+	  if (editingPost) {
+	    window.otter.updatePost(editingPost, title, body);
+	  } else {
+	    window.otter.createNewPost(title, body);
+	  }
+	} else {
+		window.otter.setPage(slug, title, body);
+	}
 };
 
 $('#userLogInOut').click(function(e) {
@@ -79,3 +128,9 @@ window.otter.addEventListener(BLOGOTTER_AUTH_CHANGED, function(event) {
 
 updateUserInfo();
 updatePostList();
+updatePageList();
+
+window.otter.addEventListener(BLOGOTTER_NEW_POSTS, function() {
+	updatePostList();
+	updatePageList();
+});

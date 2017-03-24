@@ -3,7 +3,27 @@
     "posts": {
       ".read": true,
       ".write": "root.child('users').child(auth.uid).child('editor').val() == true",
+      ".indexOn": ["timestamp"],
       "$post": {
+      	".validate": "newData.hasChildren(['title', 'body','author','timestamp'])",
+      	"title": {
+          ".validate": "newData.isString()"
+      	},
+        "body": {
+            ".validate": "newData.isString()"
+        },
+        "timestamp": {
+            ".validate": "newData.isNumber()"
+        },
+        "author": {
+            ".validate": "root.child('users').child(newData.val()).exists()"
+        }
+      },
+    },
+    "pages": {
+      ".read": true,
+      ".write": "root.child('users').child(auth.uid).child('editor').val() == true",
+      "$page": {
       	".validate": "newData.hasChildren(['title', 'body'])",
       	"title": {
           ".validate": "newData.isString()"
@@ -11,16 +31,20 @@
         "body": {
             ".validate": "newData.isString()"
         },
-        "$other": { ".validate": false }
-
-      },
+        "timestamp": {
+            ".validate": "newData.isNumber()"
+        },
+        "author": {
+            ".validate": "root.child('users').child(newData.val()).exists()"
+        }
+      }
     },
     "users": {
-      //only admin can access this area, as such we've been a bit looser with the
-      //allowable data
       ".read": "root.child('users').child(auth.uid).child('admin').val() == true",
       ".write": "root.child('users').child(auth.uid).child('admin').val() == true",
-
+        "$user" : {
+          ".validate" : "newData.hasChildren(['friendlyname'])",
+        }
     }
   }
 }
