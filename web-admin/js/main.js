@@ -78,7 +78,13 @@ var updatePostList = function() {
     }
     $('#postList').html(postHTML);
     $('#createNewPost').click(createNewPost);
-  });
+  })
+	.catch(function(err) {
+
+    var postHTML = "<li><a id='createNewPost' href='#'>New post</a></li>";
+    $('#postList').html(postHTML);
+    $('#createNewPost').click(createNewPost);
+	});
 };
 
 

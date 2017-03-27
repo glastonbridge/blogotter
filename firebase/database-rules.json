@@ -40,7 +40,7 @@
       }
     },
     "users": {
-      ".read": "root.child('users').child(auth.uid).child('admin').val() == true",
+      ".read": "true",
       ".write": "root.child('users').child(auth.uid).child('admin').val() == true",
         "$user" : {
           ".validate" : "newData.hasChildren(['friendlyname'])",

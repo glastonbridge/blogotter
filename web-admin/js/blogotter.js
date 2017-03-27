@@ -83,18 +83,33 @@ BlogOtter.prototype.latestPosts = function() {
             .limitToLast(12)
             .once('value', function(posts) {
                 var results = posts.val();
+								if (!results) {
+									res({});
+									return;
+								}
 		            var toProcess = Object.keys(results).length;
                 var nameGetter = function(postId, username) {
                     results[postId].authorname = username.val();
+
                     --toProcess;
                     if (toProcess === 0) {
                         res(results);
                     }
                 };
+								var nameFailed = function(err) {
+									--toProcess;
+									console.log("couldn't resolve user");
+								};
                 for (var postId in results) {
-                    users.child(results[postId].author + "/friendlyname").once('value', nameGetter.bind(self,postId));
+									console.log("looking for "+postId + " by "+results[postId].author);
+                    users.child(results[postId].author + "/friendlyname").once('value', nameGetter.bind(self,postId))
+										.catch(nameFailed);
                 }
-            });
+            })
+						.catch(function(err) {
+							console.log("ERROR: "+err);
+							rej(err);
+						});
     });
 };
 
