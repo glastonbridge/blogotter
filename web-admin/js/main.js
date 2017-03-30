@@ -26,15 +26,40 @@ var editingPost;
 var editingPage;
 var isPost = true;
 
+var isEditingPost = function() {
+	isEditingAnything(true);
+	$('#userdetail').show();
+	$('#pageslug').hide();
+	$('#blurb').show();
+	isPost = true;
+};
+var isEditingPage = function() {
+	isEditingAnything(true);
+	$('#userdetail').hide();
+	$('#pageslug').show();
+	$('#blurb').hide();
+	isPost = false;
+};
+var isEditingAnything = function(value) {
+	console.log("hiding ? "+ value);
+	if (value) {
+		$('#page-wrapper').show();
+	} else {
+		$('#page-wrapper').hide();
+	}
+
+};
+
 var createNewPost = function() {
   $('#editor').html("");
   $('#title').val("");
   $('#username').html(window.otter.user.displayName);
   $('#date').html("now");
-	$('#userdetail').show();
-	$('#pageslug').hide();
+	$('#blurb').val("");
+	$('#thumb').val("");
+
   editingPost = undefined;
-	isPost = true;
+	isEditingPost();
 };
 
 
@@ -43,33 +68,29 @@ var editPost = function(postId) {
     $('#title').val(storedPosts[postId].title);
 	  $('#username').html(storedPosts[postId].authorname);
 	  $('#date').html(new Date(storedPosts[postId].timestamp).toDateString());
-		$('#userdetail').show();
-		$('#pageslug').hide();
-    editingPost = postId;
-		isPost = true;
+		$('#blurb').val(storedPosts[postId].blurb);
+		$('#thumb').val(storedPosts[postId].thumb);
+	  editingPost = postId;
+		isEditingPost();
 };
 
 
 var createNewPage = function() {
   $('#editor').html("");
   $('#title').val("");
-  $('#userdetail').hide();
-	$('#pageslug').show();
   editingPage = undefined;
-	isPost = false;
+	isEditingPage();
 };
 
 var editPage = function(pageId) {
     $('#editor').html(storedPages[pageId].body);
     $('#title').val(storedPages[pageId].title);
-		$('#userdetail').hide();
-		$('#pageslug').show();
     editingPage = pageId;
-		isPost = false;
+		isEditingPage();
 };
 
 var updatePostList = function() {
-  window.otter.latestPosts().then(function(posts) {
+  window.otter.latestPosts({limit:"all"}).then(function(posts) {
     storedPosts = posts;
     var postHTML = "<li><a id='createNewPost' href='#'>New post</a></li>";
     for (var postIndex in posts) {
@@ -102,14 +123,15 @@ var updatePageList = function() {
 
 var uploadAPost = function() {
   var title = $('#title').val();
+	var thumb = $('#thumb').val();
   var body = $('#editor').html();
-  var slug = $('#slug').val();
+  var blurb = $('#blurb').val();
   console.log("editingPost = "+editingPost);
 	if (isPost) {
 	  if (editingPost) {
-	    window.otter.updatePost(editingPost, title, body);
+	    window.otter.updatePost(editingPost, {title: title, body: body, blurb: blurb, thumb:thumb});
 	  } else {
-	    window.otter.createNewPost(title, body);
+	    window.otter.createNewPost({title: title, body: body, blurb: blurb, thumb:thumb});
 	  }
 	} else {
 		window.otter.setPage(slug, title, body);
@@ -128,6 +150,18 @@ $('#userLogInOut').click(function(e) {
 
 $('#saveButton').click(uploadAPost);
 
+$('#thumb').change(function() {
+	$('#thumbprev').attr('src',$('#thumb').val());
+});
+
+$('#editor').change(function() {
+	$('#editorPlain').val($('#editor').html());
+});
+
+$('#editorPlain').change(function() {
+	$('#editor').html($('#editorPlain').val());
+});
+
 window.otter.addEventListener(BLOGOTTER_AUTH_CHANGED, function(event) {
   updateUserInfo();
 });
@@ -135,6 +169,7 @@ window.otter.addEventListener(BLOGOTTER_AUTH_CHANGED, function(event) {
 updateUserInfo();
 updatePostList();
 updatePageList();
+isEditingAnything(false);
 
 window.otter.addEventListener(BLOGOTTER_NEW_POSTS, function() {
 	updatePostList();

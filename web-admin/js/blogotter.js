@@ -1,6 +1,15 @@
 const BLOGOTTER_NEW_POSTS = 456001;
 const BLOGOTTER_AUTH_CHANGED = 456002;
 
+var validateOpts = function(toValidate, optList) {
+	for (var optIndex in optList) {
+		var opt = optList[optIndex];
+		if (!toValidate.hasOwnProperty(opt)) {
+			throw new Error("Option missing: "+opt+", in: "+JSON.stringify(toValidate));
+		}
+	}
+};
+
 /**
  * You should construct Firebase prior to loading this script, as per the
  * instructions on the Firebase console.
@@ -47,41 +56,70 @@ BlogOtter.prototype.onAuthStateChanged = function(user) {
     });
 };
 
-BlogOtter.prototype.createNewPost = function(title, body) {
+BlogOtter.prototype.createNewPost = function(options) {
+	validateOpts(options, ["title","body"]);
     var self = this;
-    return this.database.ref('posts').push({
-        //name: this.user.displayName,
-        title: title,
-        body: body,
+		console.log("opts: "+options);
+		var sanitisedOptions = {
+        title: options.title,
+        body: options.body,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         author: this.user.uid
-    }).then(function() {
+    };
+		var optionals = ["blurb","thumb"];
+		for (var optI in optionals) {
+			var option = optionals[optI];
+			if (options.hasOwnProperty(option)) {
+				sanitisedOptions[option] = options[option];
+			}
+		}
+    return this.database.ref('posts').push(sanitisedOptions).then(function() {
         self.dispatchEvent(BLOGOTTER_NEW_POSTS);
     }).catch(function(error) {
         console.error('Error writing new message to Firebase Database', error);
     });
 };
 
-BlogOtter.prototype.updatePost = function(key, title, body) {
+BlogOtter.prototype.updatePost = function(key, options) {
     var self = this;
-    return this.database.ref('posts').child(key).set({
-        //name: this.user.displayName,
-        title: title,
-        body: body
-    }).then(function() {
+		validateOpts(options, ["title","body"]);
+		console.log("opts: "+options);
+		var sanitisedOptions = {
+        title: options.title,
+        body: options.body,
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        author: this.user.uid
+    };
+		var optionals = ["blurb","thumb"];
+		for (var optI in optionals) {
+			var option = optionals[optI];
+			if (options.hasOwnProperty(option) && options[option] != undefined) {
+				sanitisedOptions[option] = options[option];
+			}
+		}
+    return this.database.ref('posts').child(key).set(sanitisedOptions)
+		.then(function() {
         self.dispatchEvent(BLOGOTTER_NEW_POSTS);
     }).catch(function(error) {
         console.error('Error writing new message to Firebase Database', error);
     });
 };
 
-BlogOtter.prototype.latestPosts = function() {
+BlogOtter.prototype.latestPosts = function(options) {
+		if (!options) {
+			options = {};
+		}
+		if (!options.limit) {
+			options.limit = 12;
+		}
     var self = this;
     return new Promise(function(res, rej) {
         var users = self.database.ref('users');
-        self.database.ref('posts')
-            .limitToLast(12)
-            .once('value', function(posts) {
+        var ref = self.database.ref('posts')
+				if (options.limit != "all") {
+					ref = ref.limitToLast(options.limit);
+				}
+        ref.once('value', function(posts) {
                 var results = posts.val();
 								if (!results) {
 									res({});

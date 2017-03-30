@@ -39,7 +39,7 @@
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                   </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+                <a class="navbar-brand" href="index.html">BlogOtter Admin</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -118,6 +118,17 @@
 							Slug <input type="text" id="slug" value="?"></input>
 						</div>
 						<!-- /.row -->
+            <div class="row" id="blurbrow">
+							<p>Write a short blurb (first paragraph of article?):</p>
+							<textarea id="blurb"></textarea>
+						</div>
+						<!-- /.row -->
+            <div class="row" id="thumbrow">
+							<p>Thumbnail image</p>
+							<img id="thumbprev" />
+							<input type="text" id="thumb"></input>
+						</div>
+						<!-- /.row -->
 						<div class="row">
 
 
@@ -190,7 +201,8 @@
                         <a class="btn btn-default" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
                     </div>
                 </div>
-                <div id="editor" class="lead" data-placeholder="This is a basic example with a simple toolbar."></div>
+								<div id="editor" class="lead" data-placeholder="This is a basic example with a simple toolbar."></div>
+								<textarea id="editorPlain" class="lead"></textarea>
                 <div id="editorPreview"></div>
                 <p style="text-align: center;">
                     <a class="btn btn-large btn-default jumbo" href="#!" onClick="$('#editorPreview').html($('#editor').html());">Preview</a>
@@ -207,18 +219,18 @@
     <!-- /.wrapper -->
 
     <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyD0gppvBPwmEG-Y6bUkMwli790Wkira374",
-            authDomain: "blogotter-66932.firebaseapp.com",
-            databaseURL: "https://blogotter-66932.firebaseio.com",
-            storageBucket: "blogotter-66932.appspot.com",
-            messagingSenderId: "905720101265"
-        };
-        firebase.initializeApp(config);
-    </script>
+		<script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
+		<script>
+		  // Initialize Firebase
+		  var config = {
+		    apiKey: "AIzaSyCJSjxZjWXlqlaIMMo3FPy-51ul2u0FwBo",
+		    authDomain: "glastonbridge-site-d52ed.firebaseapp.com",
+		    databaseURL: "https://glastonbridge-site-d52ed.firebaseio.com",
+		    storageBucket: "glastonbridge-site-d52ed.appspot.com",
+		    messagingSenderId: "154350786197"
+		  };
+		  firebase.initializeApp(config);
+		</script>
 
     <!-- jQuery -->
     <script src="./external/jquery/jquery.min.js"></script>
